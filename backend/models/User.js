@@ -12,6 +12,8 @@ const userSchema = mongoose.Schema({
     },
     profilePicture: { type: String, default: '' },
     isActive: { type: Boolean, default: true },
+    loginAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date },
 }, { timestamps: true });
 
 userSchema.pre('save', async function () {

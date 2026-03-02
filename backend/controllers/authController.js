@@ -18,7 +18,24 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if (user && (await user.matchPassword(password))) {
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    // Check if account is locked
+    if (user.lockUntil && user.lockUntil > Date.now()) {
+        const remainingMinutes = Math.ceil((user.lockUntil - Date.now()) / (1000 * 60));
+        return res.status(401).json({ 
+            message: `Account is locked. Please try again in ${remainingMinutes} minutes.` 
+        });
+    }
+
+    if (await user.matchPassword(password)) {
+        // Reset login attempts on success
+        user.loginAttempts = 0;
+        user.lockUntil = undefined;
+        await user.save();
+
         res.json({
             _id: user._id,
             name: user.name,
@@ -28,7 +45,20 @@ const loginUser = async (req, res) => {
             token: generateToken(user._id),
         });
     } else {
-        res.status(401).json({ message: 'Invalid email or password' });
+        // Increment login attempts on failure
+        user.loginAttempts += 1;
+
+        if (user.loginAttempts >= 3) {
+            user.lockUntil = Date.now() + 30 * 60 * 1000; // Lock for 30 minutes
+        }
+
+        await user.save();
+
+        const retryMsg = user.loginAttempts >= 3 
+            ? 'Too many failed attempts. Account locked for 30 minutes.' 
+            : `Invalid email or password. ${3 - user.loginAttempts} attempts remaining.`;
+
+        res.status(401).json({ message: retryMsg });
     }
 };
 

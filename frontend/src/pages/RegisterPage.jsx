@@ -64,7 +64,7 @@ const RegisterPage = () => {
                     <a href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', color: 'var(--clr-primary)', fontWeight: 800, fontSize: '1.2rem', textDecoration: 'none' }}>
                         <Briefcase size={24} /> NexusTalent Kenya
                     </a>
-                    <h2 style={{ marginTop: '.75rem', marginBottom: '.25rem' }}>Create your account</h2>
+                    <h2 style={{ marginTop: '.75rem', marginBottom: '.25rem' }}>Registration</h2>
                     <p className="fs-sm text-muted">Join Kenya's fair recruitment platform</p>
                 </div>
 

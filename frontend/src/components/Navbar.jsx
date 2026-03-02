@@ -21,6 +21,11 @@ const Navbar = () => {
         user?.role === 'employer'  ? '/employer/dashboard'  :
         user?.role === 'admin'     ? '/admin/dashboard'     : '/';
 
+    const dashboardLabel =
+        user?.role === 'admin'     ? 'Administrator panel' :
+        user?.role === 'employer'  ? 'Employer panel'      :
+        user?.role === 'jobseeker' ? 'Job seeker panel'    : 'Dashboard';
+
     return (
         <nav style={{
             position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
@@ -76,7 +81,7 @@ const Navbar = () => {
                                 }}>
                                     <Link to={dashboardPath} className="btn btn-ghost" onClick={() => setDropOpen(false)}
                                         style={{ width: '100%', justifyContent: 'flex-start', borderRadius: 0, padding: '.75rem 1rem' }}>
-                                        <LayoutDashboard size={15} /> Dashboard
+                                        <LayoutDashboard size={15} /> {dashboardLabel}
                                     </Link>
                                     <hr style={{ border: 'none', borderTop: '1px solid var(--clr-border)' }} />
                                     <button className="btn btn-ghost" onClick={handleLogout}
@@ -89,7 +94,7 @@ const Navbar = () => {
                     ) : (
                         <>
                             <Link to="/login"    className="btn btn-ghost">Sign In</Link>
-                            <Link to="/register" className="btn btn-primary btn-sm">Get Started</Link>
+                            <Link to="/register" className="btn btn-primary btn-sm">Registration</Link>
                         </>
                     )}
                 </div>
@@ -116,13 +121,13 @@ const Navbar = () => {
                     {user ? (
                         <>
                             <Link to={dashboardPath} className="btn btn-ghost" style={{ justifyContent: 'flex-start' }}
-                                onClick={() => setMobileOpen(false)}>Dashboard</Link>
+                                onClick={() => setMobileOpen(false)}>{dashboardLabel}</Link>
                             <button className="btn btn-danger btn-sm" onClick={handleLogout} style={{ justifyContent: 'center' }}>Sign Out</button>
                         </>
                     ) : (
                         <>
                             <Link to="/login"    className="btn btn-outline" style={{ justifyContent: 'center' }} onClick={() => setMobileOpen(false)}>Sign In</Link>
-                            <Link to="/register" className="btn btn-primary" style={{ justifyContent: 'center' }}  onClick={() => setMobileOpen(false)}>Get Started</Link>
+                            <Link to="/register" className="btn btn-primary" style={{ justifyContent: 'center' }}  onClick={() => setMobileOpen(false)}>Registration</Link>
                         </>
                     )}
                 </div>

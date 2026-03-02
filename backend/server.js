@@ -9,6 +9,8 @@ const employerRoutes = require('./routes/employerRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
+const path = require('path');
+
 dotenv.config();
 
 // Connect to MongoDB
@@ -16,12 +18,29 @@ connectDB();
 
 const app = express();
 
-// Middleware
+// CORS Configuration for Production
+const allowedOrigins = [
+    'http://localhost:5173',          // Local Dev
+    'http://localhost:3000',
+    'https://nexus-talent-kenya.vercel.app', // (Update this once Vercel is live)
+    /\.vercel\.app$/                  // Any Vercel preview branch
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
+
 app.use(express.json());
-app.use(cors());
 
 // Health Check / Root Route
-app.get('/', (req, res) => {
+app.get('/api/health', (req, res) => {
     res.status(200).send('Nexus Talent Kenya API is Live 🚀');
 });
 
@@ -30,6 +49,24 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobseekers', jobSeekerRoutes);
 app.use('/api/employers', employerRoutes);
 app.use('/api/admin', adminRoutes);
+
+// ---- Production: Serve Frontend ----
+if (process.env.NODE_ENV === 'production') {
+    // If we build the frontend into the backend's dist folder
+    const frontendPath = path.join(__dirname, '../frontend/dist');
+    app.use(express.static(frontendPath));
+
+    app.get('*', (req, res, next) => {
+        if (req.originalUrl.startsWith('/api')) {
+            return next(); // Pass to 404 handler
+        }
+        res.sendFile(path.resolve(frontendPath, 'index.html'));
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send('API is running in development mode...');
+    });
+}
 
 // Error Handling Middlewares
 app.use(notFound);

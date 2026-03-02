@@ -20,20 +20,29 @@ const app = express();
 
 // CORS Configuration for Production
 const allowedOrigins = [
-    'http://localhost:5173',          // Local Dev
+    'http://localhost:5173',
     'http://localhost:3000',
-    'https://nexus-talent-kenya.vercel.app', // (Update this once Vercel is live)
-    /\.vercel\.app$/                  // Any Vercel preview branch
+    'https://nexus-talent-kenya.vercel.app',
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        const isAllowed = allowedOrigins.includes(origin) || 
+                         origin.endsWith('.vercel.app') ||
+                         origin.includes('localhost');
+
+        if (isAllowed) {
             callback(null, true);
         } else {
+            console.log('Blocked by CORS:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
 

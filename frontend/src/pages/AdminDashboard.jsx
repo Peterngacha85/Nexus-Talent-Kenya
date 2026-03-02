@@ -187,7 +187,7 @@ export default function AdminDashboard() {
                             }}><Camera size={13} /></div>
                         </div>
                         <div style={{ overflow:'hidden' }}>
-                            <div style={{ fontWeight:700, fontSize:'.85rem', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{user.name}</div>
+                            <div style={{ fontWeight:700, fontSize:'.85rem', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', color: 'var(--clr-text)' }}>{user.name}</div>
                             <div style={{ fontSize:'.7rem', color:'var(--clr-primary)' }}>Administrator</div>
                         </div>
                         <input type="file" hidden accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPic} />
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
                     <div>
                         <div className="flex-between" style={{ marginBottom:'1.5rem', alignItems:'flex-end' }}>
                             <div>
-                                <h2 style={{ marginBottom:'.25rem' }}>Insights Explorer</h2>
+                                <h2 style={{ marginBottom:'.25rem', color: 'var(--clr-text)' }}>Insights Explorer</h2>
                                 <p className="text-muted fs-sm">Real-time platform performance and demographics.</p>
                             </div>
                             <div className="card card-body" style={{ padding:'.5rem .75rem', fontSize:'.8rem', display:'flex', alignItems:'center', gap:'.5rem' }}>
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
                                         <ul style={{ listStyle:'none', padding:0, fontSize:'.85rem' }}>
                                             {stats.topMetrics.locations.map(l => (
                                                 <li key={l._id} style={{ marginBottom:'.4rem', display:'flex', justifyContent:'space-between' }}>
-                                                    <span className="text-truncate" style={{ maxWidth:'120px' }}><MapPin size={12} style={{verticalAlign:'middle'}}/> {l._id}</span>
+                                                    <span className="text-truncate" style={{ maxWidth:'120px', color: 'var(--clr-text)' }}><MapPin size={12} style={{verticalAlign:'middle'}}/> {l._id}</span>
                                                     <b className="text-primary">{l.count}</b>
                                                 </li>
                                             ))}

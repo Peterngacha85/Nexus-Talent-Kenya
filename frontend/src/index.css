@@ -15,13 +15,16 @@
   --clr-navy:           #0F172A;
   --clr-slate:          #475569;
 
-  /* Neutral Palette */
+  /* Light Theme (Default) */
   --clr-bg:             #FDFDFF;
+  --clr-bg-alt:         #F8FAFC;
   --clr-surface:        #FFFFFF;
   --clr-border:         #F1F5F9;
+  --clr-border-faint:   #F8FAFC;
   --clr-muted:          #64748B;
   --clr-text:           #1E293B;
   --clr-text-light:     #475569;
+  --clr-nav-bg:         rgba(255, 255, 255, 0.92);
 
   /* Status Colours */
   --clr-success:        #10B981;
@@ -37,12 +40,30 @@
   /* Layout */
   --radius:     12px;
   --radius-sm:  8px;
+  --radius-lg:  20px;
   --radius-pill:50px;
   --max-width:  1160px;
   --nav-h:      70px;
 
   /* Transitions */
   --trans:      all .25s ease;
+}
+
+[data-theme='dark'] {
+  --clr-bg:             #0B0F19;
+  --clr-bg-alt:         #111827;
+  --clr-surface:        #111827;
+  --clr-border:         #1F2937;
+  --clr-border-faint:   #111827;
+  --clr-muted:          #94A3B8;
+  --clr-text:           #F9FAFB;
+  --clr-text-light:     #D1D5DB;
+  --clr-primary-faint:  rgba(16, 185, 129, 0.1);
+  --clr-nav-bg:         rgba(11, 15, 25, 0.9);
+  
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.3);
+  --shadow-md:  0 4px 20px rgba(0,0,0,.4);
+  --shadow-lg:  0 10px 40px rgba(0,0,0,.5);
 }
 
 /* ---- Reset ---- */
@@ -136,7 +157,7 @@ p  { color: var(--clr-text-light); }
   transition: border-color .2s;
   outline: none;
 }
-.form-control:focus { border-color: var(--clr-primary); background: #fff; box-shadow: 0 0 0 3px rgba(16,185,129,.12); }
+.form-control:focus { border-color: var(--clr-primary); background: var(--clr-surface); box-shadow: 0 0 0 3px rgba(16,185,129,.12); }
 .form-hint { font-size: .8rem; color: var(--clr-muted); }
 .form-error { font-size: .8rem; color: var(--clr-danger); }
 
@@ -284,17 +305,22 @@ label:hover .avatar-hover-overlay { opacity: 1 !important; }
 
 /* ---- Glassmorphism ---- */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--clr-nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--clr-border);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--clr-surface);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  border: 1px solid var(--clr-border);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme='dark'] .glass-card {
+  background: rgba(31, 41, 55, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ---- Layout Overrides ---- */

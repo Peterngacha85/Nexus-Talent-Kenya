@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 
@@ -12,7 +13,8 @@ import AdminDashboard     from './pages/AdminDashboard';
 
 function App() {
     return (
-        <AuthProvider>
+        <ThemeProvider>
+            <AuthProvider>
             <BrowserRouter>
                 <Navbar />
                 <Routes>
@@ -50,8 +52,9 @@ function App() {
                     {/* Fallback */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+                </BrowserRouter>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 

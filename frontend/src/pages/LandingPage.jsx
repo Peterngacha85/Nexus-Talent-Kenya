@@ -45,7 +45,7 @@ const LandingPage = () => {
             {/* ---- Hero ---- */}
             <section style={{
                 minHeight: '90vh',
-                background: 'radial-gradient(circle at top right, #ECFDF5 0%, #FDFDFF 40%)',
+                background: 'var(--clr-bg)',
                 display: 'flex', alignItems: 'center', paddingTop: 'var(--nav-h)',
             }}>
                 <div className="container">
@@ -123,7 +123,7 @@ const LandingPage = () => {
                                     {f.icon}
                                 </div>
                                 <div style={{ paddingTop: '.5rem' }}>
-                                    <h3 style={{ marginBottom: '.5rem', color: 'var(--clr-navy)' }}>{f.title}</h3>
+                                    <h3 style={{ marginBottom: '.5rem', color: 'var(--clr-primary)' }}>{f.title}</h3>
                                     <p style={{ fontSize: '.95rem', lineHeight: 1.5 }}>{f.desc}</p>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@ const LandingPage = () => {
             </section>
 
             {/* ---- Split Section: Trust ---- */}
-            <section className="section" style={{ background: '#f8fafc' }}>
+            <section className="section" style={{ background: 'var(--clr-surface)' }}>
                 <div className="container">
                     <div className="hero-split" style={{ gridTemplateColumns: '1fr 1.1fr' }}>
                         <div className="hero-image-container">
@@ -144,7 +144,7 @@ const LandingPage = () => {
                             />
                         </div>
                         <div>
-                            <h2 style={{ color: 'var(--clr-navy)', marginBottom: '1.5rem' }}>Build Trust with Verified Merit</h2>
+                            <h2 style={{ color: 'var(--clr-text)', marginBottom: '1.5rem' }}>Build Trust with Verified Merit</h2>
                             <p style={{ marginBottom: '1.5rem' }}>
                                 For Jobseekers, NexusTalent is a place to showcase your hard-earned credentials. Our verification process ensures that when an employer sees your profile, they see excellence.
                             </p>
@@ -170,7 +170,7 @@ const LandingPage = () => {
                 <div className="container">
                     <div className="hero-split">
                         <div>
-                            <h2 style={{ color: 'var(--clr-navy)', marginBottom: '1.5rem' }}>For Employers: Find the Right Fit, Faster</h2>
+                            <h2 style={{ color: 'var(--clr-text)', marginBottom: '1.5rem' }}>For Employers: Find the Right Fit, Faster</h2>
                             <p style={{ marginBottom: '1.5rem' }}>
                                 Stop filtering by names and start filtering by capability. Our platform provides high-signal data that helps you build a diverse, high-performing workforce based on actual talent metrics.
                             </p>
@@ -215,9 +215,9 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            <footer style={{ background: '#f8fafc', padding: '4rem 0', borderTop: '1px solid var(--clr-border)' }}>
+            <footer style={{ background: 'var(--clr-surface)', padding: '4rem 0', borderTop: '1px solid var(--clr-border)' }}>
                 <div className="container text-center">
-                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--clr-navy)', marginBottom: '1.5rem' }}>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--clr-text)', marginBottom: '1.5rem' }}>
                         NexusTalent <span style={{ color: 'var(--clr-primary)' }}>Kenya</span>
                     </div>
                     <p style={{ color: 'var(--clr-muted)', fontSize: '.9rem' }}>

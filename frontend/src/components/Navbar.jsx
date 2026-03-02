@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Menu, X, Briefcase, ChevronDown, User, LogOut, LayoutDashboard } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -24,10 +25,11 @@ const Navbar = () => {
         <nav style={{
             position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
             height: 'var(--nav-h)',
-            background: 'rgba(255,255,255,.92)',
+            background: 'var(--clr-nav-bg)',
             backdropFilter: 'blur(16px)',
             borderBottom: '1px solid var(--clr-border)',
             display: 'flex', alignItems: 'center',
+            transition: 'var(--trans)',
         }}>
             <div className="container flex-between" style={{ width: '100%' }}>
                 {/* Logo */}
@@ -43,6 +45,8 @@ const Navbar = () => {
                     {user?.role === 'employer' && (
                         <Link to="/employer/search" className="btn btn-ghost">Find Talent</Link>
                     )}
+
+                    <ThemeToggle />
 
                     {user ? (
                         <div style={{ position: 'relative' }}>
@@ -66,7 +70,7 @@ const Navbar = () => {
                             {dropOpen && (
                                 <div style={{
                                     position: 'absolute', top: 'calc(100% + .5rem)', right: 0,
-                                    background: '#fff', border: '1px solid var(--clr-border)',
+                                    background: 'var(--clr-surface)', border: '1px solid var(--clr-border)',
                                     borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-md)',
                                     minWidth: '190px', overflow: 'hidden', zIndex: 100,
                                 }}>
@@ -90,30 +94,35 @@ const Navbar = () => {
                     )}
                 </div>
 
-                {/* Mobile hamburger */}
-                <button className="btn btn-ghost hide-desktop" onClick={() => setMobileOpen(p => !p)}
-                    style={{ display: 'none' }}>
-                    {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-                </button>
+                {/* Mobile hamburger & ThemeToggle */}
+                <div className="hide-desktop flex-center gap-1">
+                    <ThemeToggle />
+                    <button className="btn btn-ghost" onClick={() => setMobileOpen(p => !p)}>
+                        {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                    </button>
+                </div>
             </div>
 
             {/* Mobile menu */}
             {mobileOpen && (
                 <div style={{
                     position: 'absolute', top: 'var(--nav-h)', left: 0, right: 0,
-                    background: '#fff', borderBottom: '1px solid var(--clr-border)',
+                    background: 'var(--clr-surface)', borderBottom: '1px solid var(--clr-border)',
                     padding: '1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '.5rem',
+                    boxShadow: 'var(--shadow-lg)',
                 }}>
+                    <a href="/#how-it-works" className="btn btn-ghost" style={{ justifyContent: 'flex-start' }} onClick={() => setMobileOpen(false)}>How It Works</a>
+                    <a href="/#about" className="btn btn-ghost" style={{ justifyContent: 'flex-start' }} onClick={() => setMobileOpen(false)}>About</a>
                     {user ? (
                         <>
                             <Link to={dashboardPath} className="btn btn-ghost" style={{ justifyContent: 'flex-start' }}
                                 onClick={() => setMobileOpen(false)}>Dashboard</Link>
-                            <button className="btn btn-danger btn-sm" onClick={handleLogout}>Sign Out</button>
+                            <button className="btn btn-danger btn-sm" onClick={handleLogout} style={{ justifyContent: 'center' }}>Sign Out</button>
                         </>
                     ) : (
                         <>
-                            <Link to="/login"    className="btn btn-outline" onClick={() => setMobileOpen(false)}>Sign In</Link>
-                            <Link to="/register" className="btn btn-primary"  onClick={() => setMobileOpen(false)}>Get Started</Link>
+                            <Link to="/login"    className="btn btn-outline" style={{ justifyContent: 'center' }} onClick={() => setMobileOpen(false)}>Sign In</Link>
+                            <Link to="/register" className="btn btn-primary" style={{ justifyContent: 'center' }}  onClick={() => setMobileOpen(false)}>Get Started</Link>
                         </>
                     )}
                 </div>

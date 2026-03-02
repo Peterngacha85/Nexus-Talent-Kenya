@@ -49,8 +49,12 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // Health Check / Root Route
-app.get('/api/health', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).send('Nexus Talent Kenya API is Live 🚀');
+});
+
+app.get('/api/health', (req, res) => {
+    res.status(200).send('API is healthy');
 });
 
 // Routes

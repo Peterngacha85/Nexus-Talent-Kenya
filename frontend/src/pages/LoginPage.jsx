@@ -69,8 +69,15 @@ const LoginPage = () => {
                                 placeholder="••••••••" value={form.password} onChange={handleChange} required />
                         </div>
 
-                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem' }}>
-                            {loading ? 'Signing in…' : <><span>Sign In</span> <ArrowRight size={16} /></>}
+                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem', justifyContent: 'center' }}>
+                            {loading ? (
+                                <>
+                                    <div className="spinner" style={{ width: 18, height: 18, borderSize: 2 }} />
+                                    <span>Signing in... (Waking Server)</span>
+                                </>
+                            ) : (
+                                <><span>Sign In</span> <ArrowRight size={16} /></>
+                            )}
                         </button>
                     </form>
 

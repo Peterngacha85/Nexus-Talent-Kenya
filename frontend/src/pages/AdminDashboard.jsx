@@ -155,22 +155,7 @@ export default function AdminDashboard() {
             )}
 
             {/* ── Sidebar ── */}
-            <aside style={{
-                width: 240, flexShrink: 0,
-                background: 'var(--clr-surface)',
-                borderRight: '1px solid var(--clr-border)',
-                position: 'sticky', top: 'var(--nav-h)',
-                height: `calc(100vh - var(--nav-h))`,
-                overflowY: 'auto',
-                display: 'flex', flexDirection: 'column',
-                zIndex: 200,
-                // Mobile: fixed panel
-                ...(window.innerWidth < 768 ? {
-                    position: 'fixed', top: 'var(--nav-h)', left: 0, bottom: 0, width: 240,
-                    transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
-                    transition: 'transform .25s ease',
-                } : {}),
-            }}>
+            <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 {/* Admin badge */}
                 <div style={{ padding: '1.25rem 1rem .75rem', borderBottom: '1px solid var(--clr-border)' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '.75rem', cursor: 'pointer' }}

@@ -10,7 +10,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
 const path = require('path');
-const fs = require('fs');
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ connectDB();
 
 const app = express();
 
-// 1. CORS - MUST BE FIRST
+// CORS Configuration for Production
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
@@ -27,32 +26,31 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        const isAllowed = allowedOrigins.includes(origin) || 
+                         origin.endsWith('.vercel.app') ||
+                         origin.includes('localhost');
+
+        if (isAllowed) {
             callback(null, true);
         } else {
+            console.log('Blocked by CORS:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,
-    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 
 app.use(express.json());
 
-// Request logging for Render debugging
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    next();
-});
-
 // Health Check / Root Route
-app.get('/', (req, res) => {
-    res.status(200).send('Nexus Talent Kenya API is Live 🚀');
-});
-
 app.get('/api/health', (req, res) => {
-    res.status(200).send('API is healthy');
+    res.status(200).send('Nexus Talent Kenya API is Live 🚀');
 });
 
 // Routes
@@ -67,16 +65,11 @@ if (process.env.NODE_ENV === 'production') {
     const frontendPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(frontendPath));
 
-    app.get(/.*/, (req, res, next) => {
+    app.get('*', (req, res, next) => {
         if (req.originalUrl.startsWith('/api')) {
             return next(); // Pass to 404 handler
         }
-        const indexPath = path.resolve(frontendPath, 'index.html');
-        if (fs.existsSync(indexPath)) {
-            res.sendFile(indexPath);
-        } else {
-            next(); // Pass to 404 handler
-        }
+        res.sendFile(path.resolve(frontendPath, 'index.html'));
     });
 } else {
     app.get('/', (req, res) => {

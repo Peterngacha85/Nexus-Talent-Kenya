@@ -114,7 +114,7 @@ const JobSeekerDashboard = () => {
 
     if (loading) return (
         <div className="page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="spinner" />
+            <div className="text-muted">Loading your dashboard...</div>
         </div>
     );
 

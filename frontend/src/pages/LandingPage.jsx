@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Shield, Search, FileCheck, Users, ArrowRight, CheckCircle2, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 const features = [
     {
@@ -34,28 +35,21 @@ const steps = [
 ];
 
 const LandingPage = () => {
-    const { user, isServerAwake, isCheckingServer } = useAuth();
+    const { user } = useAuth();
 
     const dashboardPath =
         user?.role === 'jobseeker' ? '/jobseeker/dashboard' :
         user?.role === 'employer'  ? '/employer/dashboard'  :
         user?.role === 'admin'     ? '/admin/dashboard'     : null;
 
+    // Wake up the free-tier server on mount
+    useEffect(() => {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        axios.get(`${apiUrl}/api/health`).catch(() => { /* silent */ });
+    }, []);
+
     return (
         <div>
-            {/* ---- Server Loading Banner ---- */}
-            {isCheckingServer && !isServerAwake && (
-                <div style={{
-                    position: 'fixed', top: 'var(--nav-h)', left: 0, right: 0,
-                    background: 'var(--clr-primary)', color: '#fff', 
-                    padding: '.5rem', textAlign: 'center', fontSize: '.85rem',
-                    fontWeight: 600, zIndex: 1100, display: 'flex', alignItems: 'center', 
-                    justifyContent: 'center', gap: '.5rem'
-                }}>
-                    <div className="spinner" style={{ width: 14, height: 14, borderColor: '#fff', borderTopColor: 'transparent' }} />
-                    NexusTalent is waking up (Render Free Tier)... This may take 30-50 seconds on first load.
-                </div>
-            )}
             {/* ---- Hero ---- */}
             <section style={{
                 minHeight: '100vh',

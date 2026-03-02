@@ -143,7 +143,7 @@ export default function AdminDashboard() {
 
     const go = (id) => { setSection(id); setSidebarOpen(false); };
 
-    if (loading) return <div className="page flex-center"><div className="spinner" /></div>;
+    if (loading) return <div className="page flex-center"><div className="text-muted">Loading Admin Panel...</div></div>;
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', paddingTop: 'var(--nav-h)' }}>

@@ -69,8 +69,8 @@ const LoginPage = () => {
                                 placeholder="••••••••" value={form.password} onChange={handleChange} required />
                         </div>
 
-                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem' }}>
-                            {loading ? 'Signing in...' : <><span>Sign In</span> <ArrowRight size={16} /></>}
+                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem', justifyContent: 'center' }}>
+                            {loading ? <span>Signing in...</span> : <><span>Sign In</span> <ArrowRight size={16} /></>}
                         </button>
                     </form>
 

@@ -197,7 +197,7 @@ const EmployerDashboard = () => {
                                 </div>
                                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                     <button type="submit" className="btn btn-primary" disabled={loading}>
-                                        {loading ? <><RefreshCw size={15} className="spin" /> Searching…</> : <><Search size={15} /> Search Talent</>}
+                                        {loading ? 'Searching…' : <><Search size={15} /> Search Talent</>}
                                     </button>
                                     {(filters.title || filters.skills || filters.location || filters.minExperience) && (
                                         <button type="button" className="btn btn-ghost" onClick={() => {

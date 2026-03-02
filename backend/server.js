@@ -20,15 +20,16 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Health Check / Root Route
+app.get('/', (req, res) => {
+    res.status(200).send('Nexus Talent Kenya API is Live 🚀');
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/jobseekers', jobSeekerRoutes);
 app.use('/api/employers', employerRoutes);
 app.use('/api/admin', adminRoutes);
-
-app.get('/', (req, res) => {
-    res.send('Nexus Talent Kenya API is running...');
-});
 
 // Error Handling Middlewares
 app.use(notFound);
@@ -37,4 +38,6 @@ app.use(errorHandler);
 // Port configuration
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+});

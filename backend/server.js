@@ -18,13 +18,7 @@ connectDB();
 
 const app = express();
 
-// Request logging for Render debugging
-app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-    next();
-});
-
-// CORS Configuration for Production
+// 1. CORS - MUST BE FIRST
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
@@ -32,25 +26,25 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl)
-        if (!origin) return callback(null, true);
-        
-        const isAllowed = allowedOrigins.includes(origin) || 
-                         origin.endsWith('.vercel.app') ||
-                         origin.includes('localhost');
-
-        if (isAllowed) {
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
             callback(null, true);
         } else {
-            console.log('Blocked by CORS:', origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: true,
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
+// 2. Logging & Parsing
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
 
 app.use(express.json());
 

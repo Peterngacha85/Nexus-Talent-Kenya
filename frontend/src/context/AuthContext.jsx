@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const AuthContext = createContext(null);
 
@@ -10,6 +11,31 @@ export const AuthProvider = ({ children }) => {
             return null;
         }
     });
+
+    const [isServerAwake, setIsServerAwake] = useState(true); // Default to true
+    const [isCheckingServer, setIsCheckingServer] = useState(false);
+
+    // Initial server wakeup
+    useEffect(() => {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        
+        // Skip check if we're on localhost
+        if (apiUrl.includes('localhost')) return;
+
+        setIsCheckingServer(true);
+        setIsServerAwake(false); // Assume it might be asleep on cold start
+
+        axios.get(`${apiUrl}/api/health`, { timeout: 60000 })
+            .then(() => {
+                setIsServerAwake(true);
+            })
+            .catch(() => {
+                // If it fails, maybe it's just slow - but we tried
+            })
+            .finally(() => {
+                setIsCheckingServer(false);
+            });
+    }, []);
 
     const login = (userData) => {
         // Always preserve the existing token if the new data doesn't include one
@@ -27,7 +53,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoggedIn: !!user }}>
+        <AuthContext.Provider value={{
+            user, login, logout, 
+            isLoggedIn: !!user,
+            isServerAwake, isCheckingServer
+        }}>
             {children}
         </AuthContext.Provider>
     );

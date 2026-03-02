@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { Shield, Search, FileCheck, Users, ArrowRight, CheckCircle2, Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
 import axios from 'axios';

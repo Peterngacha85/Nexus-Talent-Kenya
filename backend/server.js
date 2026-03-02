@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === 'production') {
     const frontendPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(frontendPath));
 
-    app.get('(.*)', (req, res, next) => {
+    app.get(/.*/, (req, res, next) => {
         if (req.originalUrl.startsWith('/api')) {
             return next(); // Pass to 404 handler
         }

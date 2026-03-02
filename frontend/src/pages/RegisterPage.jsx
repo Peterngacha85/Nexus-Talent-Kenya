@@ -166,15 +166,8 @@ const RegisterPage = () => {
                                 placeholder="Re-enter password" value={form.confirmPassword} onChange={handleChange} required />
                         </div>
 
-                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem', justifyContent: 'center' }}>
-                            {loading ? (
-                                <>
-                                    <div className="spinner" style={{ width: 18, height: 18, borderSize: 2 }} />
-                                    <span>Creating account... (Waking Server)</span>
-                                </>
-                            ) : (
-                                'Create Account'
-                            )}
+                        <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem' }}>
+                            {loading ? 'Creating account...' : 'Create Account'}
                         </button>
                     </form>
 

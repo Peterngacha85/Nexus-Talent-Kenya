@@ -2,7 +2,19 @@ import axios from 'axios';
 
 const API = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+    timeout: 60000, // 60 seconds to allow for Render cold starts
 });
+
+// Response interceptor for clear feedback on cold starts
+API.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+            error.message = 'The server is still waking up (Render Free Tier). Please try again in 10 seconds.';
+        }
+        return Promise.reject(error);
+    }
+);
 
 // Attach JWT token to every request if logged in
 API.interceptors.request.use((config) => {

@@ -10,6 +10,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const { errorHandler, notFound } = require('./middleware/errorMiddleware');
 
 const path = require('path');
+const fs = require('fs');
 
 dotenv.config();
 
@@ -37,16 +38,13 @@ app.use(cors({
     optionsSuccessStatus: 200 // Some legacy browsers choke on 204
 }));
 
-// Handle preflight requests for all routes
-app.options('*', cors());
+app.use(express.json());
 
-// 2. Logging & Parsing
+// Request logging for Render debugging
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
 });
-
-app.use(express.json());
 
 // Health Check / Root Route
 app.get('/', (req, res) => {
@@ -69,11 +67,16 @@ if (process.env.NODE_ENV === 'production') {
     const frontendPath = path.join(__dirname, '../frontend/dist');
     app.use(express.static(frontendPath));
 
-    app.get('*', (req, res, next) => {
+    app.get(/.*/, (req, res, next) => {
         if (req.originalUrl.startsWith('/api')) {
             return next(); // Pass to 404 handler
         }
-        res.sendFile(path.resolve(frontendPath, 'index.html'));
+        const indexPath = path.resolve(frontendPath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+            res.sendFile(indexPath);
+        } else {
+            next(); // Pass to 404 handler
+        }
     });
 } else {
     app.get('/', (req, res) => {

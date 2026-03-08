@@ -105,7 +105,7 @@ const LandingPage = () => {
             </div>
 
             {/* ---- Features Grid ---- */}
-            <section className="section">
+            <section id="how-it-works" className="section">
                 <div className="container">
                     <div className="section-header">
                         <h2 className="animate-slide-up">Engineered for Transparency</h2>
@@ -134,7 +134,7 @@ const LandingPage = () => {
             </section>
 
             {/* ---- Split Section: Trust ---- */}
-            <section className="section" style={{ background: 'var(--clr-surface)' }}>
+            <section id="about" className="section" style={{ background: 'var(--clr-surface)' }}>
                 <div className="container">
                     <div className="hero-split" style={{ gridTemplateColumns: '1fr 1.1fr' }}>
                         <div className="hero-image-container flex-center">

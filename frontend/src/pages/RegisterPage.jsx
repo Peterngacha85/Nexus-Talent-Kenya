@@ -11,6 +11,11 @@ const RegisterPage = () => {
         role: searchParams.get('role') || 'jobseeker',
         companyName: '', phone: '', title: '',
     });
+    const [error, setError]     = useState('');
+    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const { login } = useAuth();
     const navigate  = useNavigate();
 
     const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));

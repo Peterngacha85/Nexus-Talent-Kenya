@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { register as registerApi } from '../api/api';
-import { Briefcase, Camera, User } from 'lucide-react';
+import { Briefcase, Camera, User, Eye, EyeOff, Lock } from 'lucide-react';
 
 const RegisterPage = () => {
     const [searchParams] = useSearchParams();
@@ -15,6 +15,8 @@ const RegisterPage = () => {
     const [profilePreview, setProfilePreview] = useState(null);
     const [error, setError]     = useState('');
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const { login } = useAuth();
     const navigate  = useNavigate();
     const fileRef   = useRef();
@@ -155,15 +157,61 @@ const RegisterPage = () => {
                         )}
 
                         <div className="form-group">
-                            <label className="form-label">Password</label>
-                            <input name="password" type="password" className="form-control"
-                                placeholder="Min 8 characters" value={form.password} onChange={handleChange} required minLength={8} />
+                            <label className="form-label">
+                                <Lock size={14} style={{ marginRight: '.3rem', verticalAlign: 'middle' }} />
+                                Password
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <input name="password" type={showPassword ? 'text' : 'password'} className="form-control"
+                                    style={{ 
+                                        paddingRight: '2.5rem',
+                                        borderColor: error && (error.toLowerCase().includes('password')) ? 'var(--clr-danger)' : ''
+                                    }}
+                                    placeholder="Min 8 characters" value={form.password} onChange={handleChange} required minLength={8} />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '0.75rem',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        color: 'var(--clr-muted)',
+                                        opacity: 0.7,
+                                    }}
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
                         </div>
 
                         <div className="form-group">
-                            <label className="form-label">Confirm Password</label>
-                            <input name="confirmPassword" type="password" className="form-control"
-                                placeholder="Re-enter password" value={form.confirmPassword} onChange={handleChange} required />
+                            <label className="form-label">
+                                <Lock size={14} style={{ marginRight: '.3rem', verticalAlign: 'middle' }} />
+                                Confirm Password
+                            </label>
+                            <div style={{ position: 'relative' }}>
+                                <input name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} className="form-control"
+                                    style={{ 
+                                        paddingRight: '2.5rem',
+                                        borderColor: error && (error.toLowerCase().includes('match')) ? 'var(--clr-danger)' : ''
+                                    }}
+                                    placeholder="Re-enter password" value={form.confirmPassword} onChange={handleChange} required />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '0.75rem',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        color: 'var(--clr-muted)',
+                                        opacity: 0.7,
+                                    }}
+                                >
+                                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
                         </div>
 
                         <button type="submit" className="btn btn-primary btn-full" disabled={loading} style={{ marginTop: '.5rem', justifyContent: 'center' }}>

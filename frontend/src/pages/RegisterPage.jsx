@@ -11,24 +11,10 @@ const RegisterPage = () => {
         role: searchParams.get('role') || 'jobseeker',
         companyName: '', phone: '', title: '',
     });
-    const [profilePic, setProfilePic]     = useState(null);
-    const [profilePreview, setProfilePreview] = useState(null);
-    const [error, setError]     = useState('');
-    const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const { login } = useAuth();
     const navigate  = useNavigate();
-    const fileRef   = useRef();
 
     const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
 
-    const handlePicChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        setProfilePic(file);
-        setProfilePreview(URL.createObjectURL(file));
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,12 +25,7 @@ const RegisterPage = () => {
         }
         setLoading(true);
         try {
-            // Must use FormData so the profile picture file is sent correctly
-            const fd = new FormData();
-            Object.entries(form).forEach(([k, v]) => fd.append(k, v));
-            if (profilePic) fd.append('profilePicture', profilePic);
-
-            const { data } = await registerApi(fd);
+            const { data } = await registerApi(form);
             login(data);
             navigate(data.role === 'employer' ? '/employer/dashboard' : '/jobseeker/dashboard');
         } catch (err) {
@@ -93,32 +74,6 @@ const RegisterPage = () => {
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-                        {/* Profile Picture Upload */}
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.75rem' }}>
-                            <div
-                                onClick={() => fileRef.current.click()}
-                                style={{
-                                    width: 80, height: 80, borderRadius: '50%',
-                                    background: profilePreview ? 'transparent' : 'var(--clr-primary-faint)',
-                                    border: '2px dashed var(--clr-primary)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    cursor: 'pointer', overflow: 'hidden', position: 'relative',
-                                    transition: 'var(--trans)',
-                                }}
-                                title="Click to upload profile picture"
-                            >
-                                {profilePreview ? (
-                                    <img src={profilePreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                ) : (
-                                    <div style={{ textAlign: 'center', color: 'var(--clr-primary)' }}>
-                                        <Camera size={22} />
-                                        <div style={{ fontSize: '.65rem', marginTop: '.2rem', fontWeight: 600 }}>Add Photo</div>
-                                    </div>
-                                )}
-                            </div>
-                            <span className="fs-xs text-muted">Profile picture (optional)</span>
-                            <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handlePicChange} />
-                        </div>
 
                         <div className="form-group">
                             <label className="form-label">Full Name</label>
@@ -178,6 +133,9 @@ const RegisterPage = () => {
                                         transform: 'translateY(-50%)',
                                         color: 'var(--clr-muted)',
                                         opacity: 0.7,
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
                                     }}
                                 >
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

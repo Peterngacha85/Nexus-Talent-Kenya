@@ -60,15 +60,7 @@ const Navbar = () => {
                                 onClick={() => setDropOpen(p => !p)}
                                 style={{ gap: '.4rem', padding: '.4rem .8rem' }}
                             >
-                                {user.profilePicture ? (
-                                    <img 
-                                        src={user.profilePicture} 
-                                        alt="Profile" 
-                                        style={{ width: 24, height: 24, borderRadius: '50%', objectFit: 'cover' }} 
-                                    />
-                                ) : (
-                                    <User size={15} />
-                                )}
+                                <User size={15} />
                                 {user.name?.split(' ')[0]}
                                 <ChevronDown size={14} style={{ transition: 'transform .2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }} />
                             </button>

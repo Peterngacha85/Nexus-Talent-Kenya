@@ -77,11 +77,12 @@ const LandingPage = () => {
                             </div>
                         </div>
                         <div className="hero-image-container animate-fade-in" style={{ animationDelay: '.3s' }}>
-                            <img 
-                                src="/assets/images/kenyan_office_hero_1772431676593.png" 
-                                alt="Modern Office Nairobi" 
-                                className="hero-img animate-float"
-                            />
+                            <div className="icon-cluster">
+                                <div className="icon-cluster-item" style={{ top: '10%', left: '10%', animationDelay: '0s' }}><Shield size={42} /></div>
+                                <div className="icon-cluster-item" style={{ top: '40%', right: '15%', animationDelay: '1s' }}><Award size={48} /></div>
+                                <div className="icon-cluster-item" style={{ bottom: '15%', left: '25%', animationDelay: '2s' }}><Briefcase size={38} /></div>
+                                <div className="icon-cluster-item" style={{ top: '65%', left: '55%', animationDelay: '1.5s' }}><Users size={32} /></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,12 +137,10 @@ const LandingPage = () => {
             <section className="section" style={{ background: 'var(--clr-surface)' }}>
                 <div className="container">
                     <div className="hero-split" style={{ gridTemplateColumns: '1fr 1.1fr' }}>
-                        <div className="hero-image-container">
-                            <img 
-                                src="/assets/images/talent_verification_abstract_1772431719934.png" 
-                                alt="Verification Process" 
-                                className="img-float"
-                            />
+                        <div className="hero-image-container flex-center">
+                            <div className="icon-hero">
+                                <FileCheck size={60} />
+                            </div>
                         </div>
                         <div>
                             <h2 style={{ color: 'var(--clr-text)', marginBottom: '1.5rem' }}>Build Trust with Verified Merit</h2>
@@ -181,12 +180,10 @@ const LandingPage = () => {
                                 <div style={{ marginTop: '1rem', fontWeight: 700, fontSize: '.9rem' }}>— Lead Recruiter, Nairobi Tech Hub</div>
                             </div>
                         </div>
-                        <div className="hero-image-container">
-                            <img 
-                                src="/assets/images/professional_collaboration_kenya_1772431743031.png" 
-                                alt="Professional Collaboration" 
-                                className="img-float"
-                            />
+                        <div className="hero-image-container flex-center">
+                            <div className="icon-hero" style={{ background: 'rgba(59, 130, 246, 0.1)', borderColor: 'var(--clr-primary)' }}>
+                                <Users size={60} />
+                            </div>
                         </div>
                     </div>
                 </div>

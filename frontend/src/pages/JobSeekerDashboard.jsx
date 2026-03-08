@@ -13,6 +13,7 @@ const JobSeekerDashboard = () => {
     const [tab, setTab]           = useState('profile');
     const [loading, setLoading]   = useState(true);
     const [msg, setMsg]           = useState('');
+    const [uploadingDoc, setUploadingDoc] = useState(false);
     const [uploadFile, setUploadFile] = useState(null);
     const [uploadType, setUploadType] = useState('cv');
     const [showPin, setShowPin] = useState(false);
@@ -24,24 +25,7 @@ const JobSeekerDashboard = () => {
     const [editForm, setEditForm] = useState({
         title: '', skills: '', location: '', summary: '', experience: 0,
     });
-    const [uploadingPic, setUploadingPic] = useState(false);
 
-    const handlePhotoUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        setUploadingPic(true);
-        try {
-            const formData = new FormData();
-            formData.append('profilePicture', file);
-            const r = await updateUser(formData);
-            setLocalUser({ ...user, ...r.data }); // Preserve token
-            setMsg('Profile photo updated successfully!');
-        } catch (err) {
-            setMsg('Failed to update profile photo.');
-        } finally {
-            setUploadingPic(false);
-        }
-    };
 
     useEffect(() => { loadData(); }, []);
 
@@ -77,6 +61,8 @@ const JobSeekerDashboard = () => {
     const handleUpload = async (e) => {
         e.preventDefault();
         if (!uploadFile) return;
+        setUploadingDoc(true);
+        setMsg('');
         const fd = new FormData();
         fd.append('file', uploadFile);
         fd.append('type', uploadType);
@@ -86,6 +72,7 @@ const JobSeekerDashboard = () => {
             setMsg('Document uploaded! Awaiting admin verification.');
             setUploadFile(null);
         } catch { setMsg('Upload failed.'); }
+        finally { setUploadingDoc(false); }
     };
 
     const handleApproveClick = (id) => {
@@ -149,27 +136,9 @@ const JobSeekerDashboard = () => {
                 {/* Header */}
                 <div className="flex-between" style={{ marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <label style={{
-                                display: 'block', cursor: 'pointer', position: 'relative',
-                                opacity: uploadingPic ? 0.6 : 1, transition: 'var(--trans)'
-                            }} title="Click to change photo">
-                            <div className="avatar avatar-lg" style={{ overflow: 'hidden', position: 'relative' }}>
-                                {user.profilePicture ? (
-                                    <img src={user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                ) : (
-                                    user.name?.charAt(0).toUpperCase()
-                                )}
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: 'rgba(0,0,0,0.35)', color: 'white',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    opacity: 0, transition: 'opacity .2s',
-                                }} className="avatar-hover-overlay">
-                                    <Camera size={18} />
-                                </div>
-                            </div>
-                            <input type="file" hidden accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPic} />
-                        </label>
+                        <div className="avatar avatar-lg">
+                            {user.name?.charAt(0).toUpperCase()}
+                        </div>
                         <div>
                             <h2 style={{ marginBottom: '.15rem' }}>{user.name}</h2>
                             <p className="text-muted fs-sm" style={{ marginBottom: '.5rem' }}>{profile?.title || 'Job Seeker'} · {profile.location || 'Location Not Set'}</p>

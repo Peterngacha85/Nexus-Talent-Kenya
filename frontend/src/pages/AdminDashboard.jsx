@@ -32,10 +32,6 @@ export default function AdminDashboard() {
     const [loading,    setLoading]    = useState(true);
 
     /* profile */
-    const [uploadingPic, setUploadingPic] = useState(false);
-    const [editMode,  setEditMode]  = useState(false);
-    const [editName,  setEditName]  = useState(user?.name || '');
-    const [uploadFile,setUploadFile]= useState(null);
     const [saving,    setSaving]    = useState(false);
 
     /* user edit modal */
@@ -66,31 +62,14 @@ export default function AdminDashboard() {
     }
 
     /* ── handlers ── */
-    const handlePhotoUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        setUploadingPic(true);
-        try {
-            const fd = new FormData();
-            fd.append('profilePicture', file);
-            const r = await updateUser(fd);
-            setLocalUser({ ...user, ...r.data });
-            setMsg('Profile photo updated!');
-        } catch (err) {
-            setMsg(err.response?.data?.message || 'Failed to update photo.');
-        } finally { setUploadingPic(false); }
-    };
 
     const handleSaveProfile = async (e) => {
         e.preventDefault(); setSaving(true); setMsg('');
         try {
-            const fd = new FormData();
-            fd.append('name', editName);
-            if (uploadFile) fd.append('profilePicture', uploadFile);
-            const r = await updateUser(fd);
+            const r = await updateUser({ name: editName });
             setLocalUser({ ...user, ...r.data });
             setMsg('Profile updated!');
-            setEditMode(false); setUploadFile(null);
+            setEditMode(false);
         } catch (err) {
             setMsg(err.response?.data?.message || 'Update failed.');
         } finally { setSaving(false); }
@@ -173,25 +152,15 @@ export default function AdminDashboard() {
             <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
                 {/* Admin badge */}
                 <div style={{ padding: '1.25rem 1rem .75rem', borderBottom: '1px solid var(--clr-border)' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '.75rem', cursor: 'pointer' }}
-                        title="Click to change photo">
-                        <div className="avatar" style={{ overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
-                            {user.profilePicture
-                                ? <img src={user.profilePicture} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                                : user.name?.charAt(0).toUpperCase()
-                            }
-                            <div className="avatar-hover-overlay" style={{
-                                position:'absolute', inset:0, background:'rgba(0,0,0,.4)', color:'#fff',
-                                display:'flex', alignItems:'center', justifyContent:'center',
-                                opacity:0, transition:'opacity .2s',
-                            }}><Camera size={13} /></div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem' }}>
+                        <div className="avatar" style={{ flexShrink: 0 }}>
+                            {user.name?.charAt(0).toUpperCase()}
                         </div>
                         <div style={{ overflow:'hidden' }}>
                             <div style={{ fontWeight:700, fontSize:'.85rem', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', color: 'var(--clr-text)' }}>{user.name}</div>
                             <div style={{ fontSize:'.7rem', color:'var(--clr-primary)' }}>Administrator</div>
                         </div>
-                        <input type="file" hidden accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPic} />
-                    </label>
+                    </div>
                 </div>
 
                 {/* Nav */}
@@ -325,7 +294,7 @@ export default function AdminDashboard() {
                                 <ActivitySection title="New Signups" icon={<UserPlus size={16}/>}>
                                     {stats.recentActivity.users.map(u => (
                                         <ActivityItem key={u._id} title={u.name} sub={new Date(u.createdAt).toLocaleDateString()}
-                                            pic={u.profilePicture} role={u.role} />
+                                            role={u.role} />
                                     ))}
                                 </ActivitySection>
                                 <ActivitySection title="Doc Uploads" icon={<Upload size={16}/>}>
@@ -356,7 +325,7 @@ export default function AdminDashboard() {
                                 {jobSeekers.map(js => (
                                     <div key={js._id} className="card card-body flex-between" style={{ flexWrap:'wrap', gap:'.75rem' }}>
                                         <div style={{ display:'flex', alignItems:'center', gap:'.75rem' }}>
-                                            <AvatarCell pic={js.user?.profilePicture} name={js.user?.name}/>
+                                            <AvatarCell name={js.user?.name}/>
                                             <div>
                                                 <div style={{ fontWeight:600 }}>{js.user?.name || 'Unknown'}</div>
                                                 <div className="fs-xs text-muted">{js.user?.email}</div>
@@ -401,7 +370,7 @@ export default function AdminDashboard() {
                                 {employers.map(em => (
                                     <div key={em._id} className="card card-body flex-between" style={{ flexWrap:'wrap', gap:'.75rem' }}>
                                         <div style={{ display:'flex', alignItems:'center', gap:'.75rem' }}>
-                                            <AvatarCell pic={em.user?.profilePicture} name={em.user?.name}/>
+                                            <AvatarCell name={em.user?.name}/>
                                             <div>
                                                 <div style={{ fontWeight:600 }}>{em.user?.name || 'Unknown'}</div>
                                                 <div className="fs-xs text-muted">{em.user?.email}</div>
@@ -427,7 +396,7 @@ export default function AdminDashboard() {
                                 {allUsers.map(u => (
                                     <div key={u._id} className="card card-body flex-between" style={{ flexWrap:'wrap', gap:'.75rem' }}>
                                         <div style={{ display:'flex', alignItems:'center', gap:'.75rem' }}>
-                                            <AvatarCell pic={u.profilePicture} name={u.name}/>
+                                            <AvatarCell name={u.name}/>
                                             <div>
                                                 <div style={{ fontWeight:600 }}>{u.name}</div>
                                                 <div className="fs-xs text-muted">{u.email}</div>
@@ -501,24 +470,9 @@ export default function AdminDashboard() {
                         <div className="card card-body">
                             {/* Avatar */}
                             <div style={{ textAlign:'center', marginBottom:'1.5rem' }}>
-                                <label style={{ display:'inline-block', cursor:'pointer', position:'relative', opacity: uploadingPic ? .6 : 1 }}
-                                    title="Click to change photo">
-                                    <div className="avatar avatar-lg" style={{ overflow:'hidden', width:80, height:80, fontSize:'2rem', margin:'0 auto', position:'relative' }}>
-                                        {user.profilePicture
-                                            ? <img src={user.profilePicture} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-                                            : user.name?.charAt(0).toUpperCase()
-                                        }
-                                        <div className="avatar-hover-overlay" style={{
-                                            position:'absolute', inset:0, background:'rgba(0,0,0,.35)', color:'#fff',
-                                            display:'flex', alignItems:'center', justifyContent:'center',
-                                            opacity:0, transition:'opacity .2s',
-                                        }}><Camera size={20}/></div>
-                                    </div>
-                                    <input type="file" hidden accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPic}/>
-                                </label>
-                                <p className="fs-xs text-muted" style={{ marginTop:'.5rem' }}>
-                                    {uploadingPic ? 'Uploading…' : 'Click photo to change'}
-                                </p>
+                                <div className="avatar avatar-lg" style={{ width:80, height:80, fontSize:'2rem', margin:'0 auto' }}>
+                                    {user.name?.charAt(0).toUpperCase()}
+                                </div>
                             </div>
 
                             {editMode ? (
@@ -655,7 +609,7 @@ function ActivityItem({ title, sub, pic, role, type, status }) {
         <div style={{ display:'flex', alignItems:'center', gap:'.6rem', padding:'.5rem', background:'var(--clr-surface-light)', borderRadius:'var(--radius-sm)', border:'1px solid var(--clr-border-faint)' }}>
             {pic !== undefined ? (
                 <div className="avatar" style={{ width:28, height:28, fontSize:'.7rem' }}>
-                    {pic ? <img src={pic} style={{ width:'100%', height:'100%', objectFit:'cover' }}/> : title.charAt(0)}
+                    {title.charAt(0)}
                 </div>
             ) : type ? (
                 <div style={{ width:28, height:28, background:'var(--clr-primary-faint)', color:'var(--clr-primary)', display:'flex', alignItems:'center', justifyContent:'center', borderRadius:'50%' }}>
@@ -676,13 +630,10 @@ function ActivityItem({ title, sub, pic, role, type, status }) {
     );
 }
 
-function AvatarCell({ pic, name }) {
+function AvatarCell({ name }) {
     return (
-        <div className="avatar" style={{ overflow:'hidden', flexShrink:0 }}>
-            {pic
-                ? <img src={pic} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
-                : name?.charAt(0).toUpperCase() || '?'
-            }
+        <div className="avatar">
+            {name?.charAt(0).toUpperCase() || '?'}
         </div>
     );
 }

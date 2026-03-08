@@ -21,24 +21,6 @@ const EmployerDashboard = () => {
     
     // Modal State
     const [requestModal, setRequestModal] = useState({ open: false, talentId: null, message: '' });
-    const [uploadingPic, setUploadingPic] = useState(false);
-
-    const handlePhotoUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        setUploadingPic(true);
-        try {
-            const formData = new FormData();
-            formData.append('profilePicture', file);
-            const r = await updateUser(formData);
-            setLocalUser({ ...user, ...r.data }); // Preserve token
-            setMsg('Profile photo updated successfully!');
-        } catch (err) {
-            setMsg('Failed to update profile photo.');
-        } finally {
-            setUploadingPic(false);
-        }
-    };
 
     useEffect(() => {
         loadRequests(); // Always load requests to keep the "My Requests" badge accurate
@@ -103,27 +85,9 @@ const EmployerDashboard = () => {
                 {/* Header */}
                 <div className="flex-between" style={{ marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <label style={{
-                                display: 'block', cursor: 'pointer', position: 'relative',
-                                opacity: uploadingPic ? 0.6 : 1, transition: 'var(--trans)'
-                            }} title="Click to change photo">
-                            <div className="avatar avatar-lg" style={{ overflow: 'hidden', position: 'relative' }}>
-                                {user.profilePicture ? (
-                                    <img src={user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                ) : (
-                                    user.name?.charAt(0).toUpperCase()
-                                )}
-                                <div style={{
-                                    position: 'absolute', inset: 0,
-                                    background: 'rgba(0,0,0,0.35)', color: 'white',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    opacity: 0, transition: 'opacity .2s',
-                                }} className="avatar-hover-overlay">
-                                    <Camera size={18} />
-                                </div>
-                            </div>
-                            <input type="file" hidden accept="image/*" onChange={handlePhotoUpload} disabled={uploadingPic} />
-                        </label>
+                        <div className="avatar avatar-lg">
+                            {user.name?.charAt(0).toUpperCase()}
+                        </div>
                         <div>
                             <h2 style={{ marginBottom: '.15rem' }}>{user.name}</h2>
                             <span className="text-muted fs-sm">Employer · Find and connect with verified talent across Kenya</span>
@@ -220,12 +184,8 @@ const EmployerDashboard = () => {
                                     {results.map((talent) => (
                                         <div key={talent._id} className="card card-body card-hover">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                                                <div className="avatar" style={{ background: 'var(--clr-primary-faint)', color: 'var(--clr-primary-dark)', fontWeight: 700, overflow: 'hidden' }}>
-                                                    {talent.user?.profilePicture ? (
-                                                        <img src={talent.user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                    ) : (
-                                                        talent.title?.charAt(0).toUpperCase() || '?'
-                                                    )}
+                                                <div className="avatar" style={{ background: 'var(--clr-primary-faint)', color: 'var(--clr-primary-dark)', fontWeight: 700 }}>
+                                                    {talent.title?.charAt(0).toUpperCase() || '?'}
                                                 </div>
                                                 <div>
                                                     <h4 style={{ marginBottom: '.15rem' }}>{talent.title}</h4>
@@ -280,16 +240,12 @@ const EmployerDashboard = () => {
                                                         <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap' }}>
                                                             {/* Rounded Square Profile Picture */}
                                                             <div style={{ 
-                                                                width: '80px', height: '80px', borderRadius: '12px', overflow: 'hidden',
-                                                                background: 'var(--clr-border)', flexShrink: 0
+                                                                width: '80px', height: '80px', borderRadius: '12px',
+                                                                background: 'var(--clr-border)', flexShrink: 0,
+                                                                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                                                                fontSize: '2rem', color: 'var(--clr-text-muted)'
                                                             }}>
-                                                                {r.jobSeeker?.user?.profilePicture ? (
-                                                                    <img src={r.jobSeeker.user.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                                                ) : (
-                                                                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', color: 'var(--clr-text-muted)' }}>
-                                                                        {r.jobSeeker?.user?.name?.charAt(0).toUpperCase() || '?'}
-                                                                    </div>
-                                                                )}
+                                                                {r.jobSeeker?.user?.name?.charAt(0).toUpperCase() || '?'}
                                                             </div>
                                                             <div>
                                                                 <p style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '.25rem' }}>{r.jobSeeker?.user?.name || 'Name Hidden'}</p>

@@ -190,6 +190,7 @@ p  { color: var(--clr-text-light); }
 .alert-error   { background: #FEF2F2; color: #991B1B; border-left: 4px solid var(--clr-danger); }
 .alert-success { background: var(--clr-primary-faint); color: var(--clr-primary-dark); border-left: 4px solid var(--clr-primary); }
 .alert-info    { background: #EFF6FF; color: #1E40AF; border-left: 4px solid var(--clr-info); }
+.alert-warning { background: #FFFBEB; color: #92400E; border-left: 4px solid var(--clr-warning); }
 
 /* ---- Avatar ---- */
 .avatar {

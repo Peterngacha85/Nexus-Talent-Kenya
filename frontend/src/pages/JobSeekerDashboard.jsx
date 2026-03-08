@@ -4,7 +4,7 @@ import {
     getJobSeekerProfile, updateJobSeekerProfile,
     uploadDocument, getPendingRequests, approveAccessRequest, rejectAccessRequest, updateUser, getMyProfile
 } from '../api/api';
-import { User, Upload, Bell, CheckCircle, XCircle, FileText, Award, MapPin, Briefcase, Eye, EyeOff, Camera } from 'lucide-react';
+import { User, Upload, Bell, CheckCircle, XCircle, FileText, Award, MapPin, Briefcase, Eye, EyeOff, Camera, AlertTriangle } from 'lucide-react';
 
 const JobSeekerDashboard = () => {
     const { user, login: setLocalUser } = useAuth();
@@ -19,6 +19,7 @@ const JobSeekerDashboard = () => {
     
     // Modal State
     const [pinModal, setPinModal] = useState({ open: false, requestId: null, pin: '' });
+    const [modalError, setModalError] = useState('');
 
     const [editForm, setEditForm] = useState({
         title: '', skills: '', location: '', summary: '', experience: 0,
@@ -89,18 +90,25 @@ const JobSeekerDashboard = () => {
 
     const handleApproveClick = (id) => {
         setPinModal({ open: true, requestId: id, pin: '' });
+        setModalError('');
     };
 
     const submitPin = async (e) => {
         e.preventDefault();
+        setModalError('');
         try {
             await approveAccessRequest({ requestId: pinModal.requestId, pin: pinModal.pin });
             setMsg('Access approved!');
             setPinModal({ open: false, requestId: null, pin: '' });
             loadData();
         } catch (err) { 
-            setMsg(err.response?.data?.message || 'Approval failed.'); 
-            setPinModal({ open: false, requestId: null, pin: '' });
+            const errorMsg = err.response?.data?.message || 'Approval failed.';
+            if (errorMsg.toLowerCase().includes('pin')) {
+                setModalError(errorMsg);
+            } else {
+                setMsg(errorMsg);
+                setPinModal({ open: false, requestId: null, pin: '' });
+            }
         }
     };
 
@@ -330,13 +338,29 @@ const JobSeekerDashboard = () => {
                         <p className="fs-sm text-muted" style={{ marginBottom: '1.25rem' }}>
                             Enter your 4-digit consent PIN to authorize this employer to view your full profile and contact details.
                         </p>
+                        
+                        {modalError && (
+                            <div className="alert alert-warning" style={{ padding: '.65rem .85rem', fontSize: '.8rem', marginBottom: '1.25rem' }}>
+                                <AlertTriangle size={14} style={{ marginRight: '.4rem', verticalAlign: 'middle' }} />
+                                {modalError}
+                            </div>
+                        )}
+
                         <form onSubmit={submitPin}>
                             <div className="form-group">
                                 <label className="form-label">Consent PIN</label>
                                 <input className="form-control" type="password" maxLength={4} autoFocus
                                     placeholder="e.g. 1234"
+                                    style={{ 
+                                        textAlign: 'center', letterSpacing: '8px', fontSize: '1.25rem',
+                                        borderColor: modalError ? 'var(--clr-warning)' : '',
+                                        background: modalError ? '#FFFBEB' : ''
+                                    }}
                                     value={pinModal.pin} 
-                                    onChange={e => setPinModal(p => ({ ...p, pin: e.target.value }))}
+                                    onChange={e => {
+                                        setPinModal(p => ({ ...p, pin: e.target.value }));
+                                        if (modalError) setModalError('');
+                                    }}
                                     required
                                 />
                             </div>

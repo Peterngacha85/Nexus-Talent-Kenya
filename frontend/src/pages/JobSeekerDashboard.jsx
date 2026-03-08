@@ -108,18 +108,17 @@ const JobSeekerDashboard = () => {
     };
 
     if (loading) return (
-        <div className="page flex-center">
-            <div className="spinner-container">
-                <div className="spinner spinner-lg"></div>
-                <div style={{ 
-                    fontWeight: 600, 
-                    color: 'var(--clr-navy)', 
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                    fontSize: '.85rem'
-                }}>
-                    Loading your profile...
-                </div>
+        <div className="loading-screen">
+            <div className="spinner spinner-lg"></div>
+            <div style={{ 
+                fontWeight: 600, 
+                color: 'var(--clr-primary)', 
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                fontSize: '.85rem',
+                marginTop: '1.5rem'
+            }}>
+                Loading your profile...
             </div>
         </div>
     );

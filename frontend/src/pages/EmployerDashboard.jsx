@@ -14,7 +14,7 @@ const EmployerDashboard = () => {
     const [tab, setTab]         = useState('search');
     const [results, setResults] = useState([]);
     const [myReqs, setMyReqs]   = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [msg, setMsg]         = useState('');
     const [filters, setFilters] = useState({ title: '', skills: '', location: '', minExperience: '' });
     const [availableTitles, setAvailableTitles] = useState([]);
@@ -78,6 +78,22 @@ const EmployerDashboard = () => {
             setRequestModal({ open: false, talentId: null, message: '' });
         }
     };
+
+    if (loading) return (
+        <div className="loading-screen">
+            <div className="spinner spinner-lg"></div>
+            <div style={{ 
+                fontWeight: 600, 
+                color: 'var(--clr-primary)', 
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                fontSize: '.85rem',
+                marginTop: '1.5rem'
+            }}>
+                Preparing Talent Search...
+            </div>
+        </div>
+    );
 
     return (
         <div className="page">

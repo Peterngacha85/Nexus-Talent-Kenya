@@ -43,7 +43,7 @@ const LoginPage = () => {
                 {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', color: 'var(--clr-primary)', fontWeight: 800, fontSize: '1.2rem' }}>
-                        <Briefcase size={24} /> NexusTalent Kenya
+                        <Briefcase size={24} /> Nexus Jobseek Kenya
                     </Link>
                     <h2 style={{ marginTop: '.75rem', marginBottom: '.25rem' }}>Welcome back</h2>
                     <p className="fs-sm text-muted">Sign in to your account</p>

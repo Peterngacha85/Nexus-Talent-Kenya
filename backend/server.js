@@ -50,7 +50,7 @@ app.use(express.json());
 
 // Health Check / Root Route
 app.get('/api/health', (req, res) => {
-    res.status(200).send('Nexus Talent Kenya API is Live 🚀');
+    res.status(200).send('Nexus Jobseek Kenya API is Live 🚀');
 });
 
 // Routes

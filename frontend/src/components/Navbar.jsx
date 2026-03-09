@@ -40,7 +40,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontWeight: 800, fontSize: '1.15rem', color: 'var(--clr-primary)', textDecoration: 'none' }}>
                     <Briefcase size={22} />
-                    <span>Nexus<span style={{ color: 'var(--clr-text)' }}>Talent</span></span>
+                    <span>Nexus<span style={{ color: 'var(--clr-text)' }}>Jobseek</span></span>
                 </a>
 
                 {/* Desktop Nav */}

@@ -59,7 +59,7 @@ const LandingPage = () => {
                                 Where Your <span className="gradient-text">Skills</span> Define Your Future
                             </h1>
                             <p style={{ fontSize: '1.2rem', marginBottom: '2.5rem', maxWidth: '540px', color: 'var(--clr-muted)' }}>
-                                NexusTalent Kenya is leveling the playing field. We connect top Kenyan talent with progressive employers through a bias-free, anonymized recruitment platform.
+                                Nexus Jobseek Kenya is leveling the playing field. We connect top Kenyan talent with progressive employers through a bias-free, anonymized recruitment platform.
                             </p>
                             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                                 {dashboardPath ? (
@@ -145,7 +145,7 @@ const LandingPage = () => {
                         <div>
                             <h2 style={{ color: 'var(--clr-text)', marginBottom: '1.5rem' }}>Build Trust with Verified Merit</h2>
                             <p style={{ marginBottom: '1.5rem' }}>
-                                For Jobseekers, NexusTalent is a place to showcase your hard-earned credentials. Our verification process ensures that when an employer sees your profile, they see excellence.
+                                For Jobseekers, Nexus Jobseek is a place to showcase your hard-earned credentials. Our verification process ensures that when an employer sees your profile, they see excellence.
                             </p>
                             <ul style={{ listStyle: 'none', padding: 0 }}>
                                 {[
@@ -175,7 +175,7 @@ const LandingPage = () => {
                             </p>
                             <div className="glass-card card-body" style={{ borderLeft: '4px solid var(--clr-primary)' }}>
                                 <p style={{ fontStyle: 'italic', color: 'var(--clr-slate)' }}>
-                                    "NexusTalent transformed our hiring. We've seen a 40% increase in placement quality since switching to merit-based filtering."
+                                    "Nexus Jobseek transformed our hiring. We've seen a 40% increase in placement quality since switching to merit-based filtering."
                                 </p>
                                 <div style={{ marginTop: '1rem', fontWeight: 700, fontSize: '.9rem' }}>— Lead Recruiter, Nairobi Tech Hub</div>
                             </div>
@@ -215,10 +215,10 @@ const LandingPage = () => {
             <footer style={{ background: 'var(--clr-surface)', padding: '4rem 0', borderTop: '1px solid var(--clr-border)' }}>
                 <div className="container text-center">
                     <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--clr-text)', marginBottom: '1.5rem' }}>
-                        NexusTalent <span style={{ color: 'var(--clr-primary)' }}>Kenya</span>
+                        Nexus Jobseek <span style={{ color: 'var(--clr-primary)' }}>Kenya</span>
                     </div>
                     <p style={{ color: 'var(--clr-muted)', fontSize: '.9rem' }}>
-                        © {new Date().getFullYear()} NexusTalent Kenya. Empowering merit, ending bias.
+                        © {new Date().getFullYear()} Nexus Jobseek Kenya. Empowering merit, ending bias.
                     </p>
                 </div>
             </footer>

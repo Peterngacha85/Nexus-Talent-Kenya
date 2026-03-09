@@ -121,7 +121,7 @@ const EmployerDashboard = () => {
                 <div className="alert alert-info" style={{ marginBottom: '2rem', display: 'flex', gap: '.75rem', alignItems: 'flex-start' }}>
                     <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '.15rem' }} />
                     <div className="fs-sm">
-                        <strong>Important:</strong> You are only seeing candidates who have been officially verified by NexusTalent admins. Unverified accounts (including new test accounts you just created) will not appear here yet.
+                        <strong>Important:</strong> You are only seeing candidates who have been officially verified by Nexus Jobseek admins. Unverified accounts (including new test accounts you just created) will not appear here yet.
                     </div>
                 </div>
 
